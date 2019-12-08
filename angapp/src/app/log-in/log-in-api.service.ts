@@ -3,10 +3,9 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {API_URL} from '../env';
-import {Survey} from './survey.model';
 
 @Injectable()
-export class SurveyService {
+export class LoginService {
 
   constructor(private http: HttpClient) {
   }
@@ -15,18 +14,10 @@ export class SurveyService {
     return Observable.throw(err.message || 'Error: Unable to complete request.');
   }
 
-  // GET non-observable
-  // getSurveyInfo(): any {
-  //   let x = this.http.get(`${API_URL}/getSurveyInfo`);
-  //   console.log(JSON.stringify(x));
-  //   return x;
-  // }
-
-  // GET list of public, future events
-  getSurveyInfo(): Observable<any> {
+  attemptLogin(loginInfo): any {
     return this.http
-      .get(`${API_URL}/getSurveyInfo`).pipe(
-         catchError(SurveyService._handleError)
+      .post(`${API_URL}/login`, JSON.stringify(loginInfo)).pipe(
+         catchError(LoginService._handleError)
      );
   }
 }

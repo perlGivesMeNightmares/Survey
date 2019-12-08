@@ -4,7 +4,7 @@ import {SurveyService} from './customerSurvey/survey-api.service';
 import {Survey} from './customerSurvey/survey.model';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-survey',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
