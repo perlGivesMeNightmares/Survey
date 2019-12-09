@@ -10,7 +10,12 @@ import {Router} from "@angular/router"
 })
 export class LogInComponent implements OnInit {
   data = {};
-  loginRes = '';
+  createUserPage: boolean = false;
+  loginRes: any;
+  changeModeText: string = 'Create an account';
+  buttonText: string = 'Log In';
+  setError: boolean = false;
+  errorText: string = '';
 
   constructor(private loginApi: LoginService) {
   }
@@ -19,6 +24,32 @@ export class LogInComponent implements OnInit {
   }
 
   onSubmit() {
-  	this.loginRes = this.loginApi.attemptLogin(this.data);
+    if (this.createUserPage && (this.data['password'] != this.data['password_confirm'])) {
+      this.setError = true;
+      this.errorText = 'Passwords must match HOOOOOONK';
+    }
+    else {
+      this.setError = false;
+    }
+
+  	this.loginApi.attemptLogin(this.data).subscribe(data => { 
+      console.log('data is ' + JSON.stringify(data));
+      let loginRes = data;
+      if (!loginRes.success) {
+        this.setError = true;
+        this.errorText = loginRes.msg
+      }
+      else {
+        console.log('login success');
+      }
+    });
+    
+  }
+
+  changeMode() {
+    this.changeModeText = this.createUserPage ? 'Create an account' : 'Log in';
+    this.buttonText = this.createUserPage ? 'Log In' : 'Register';
+    this.createUserPage = !this.createUserPage;
+    this.setError = false;
   }
 }

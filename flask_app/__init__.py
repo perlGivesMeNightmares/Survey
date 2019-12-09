@@ -1,11 +1,16 @@
 from flask import Flask
+from flask import request
 from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from flask_sqlalchemy import SQLAlchemy
+from hashlib import sha256
 import os
 import json
 
+
+# app = Flask(__name__)
+# CORS(app)
 
 def setup_db(app):
 	POSTGRES_URL = os.environ['POSTGRES_URL']
@@ -35,10 +40,12 @@ def run_query(db, sql_text):
 def build_flask_app():
 	app = Flask(__name__)
 	CORS(app)
+	# cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+	app.secret_key = os.environ['durr']
 
-	# engine, session, db = setup_db(app)
-	# conn = engine.connect()
-	# conn.execute("CREATE TABLE users(user_id serial PRIMARY KEY, username TEXT UNIQUE NOT NULL, password TEXT UNIQUE NOT NULL;")
+	engine, session, db = setup_db(app)
+	conn = engine.connect()
+	conn.execute("CREATE TABLE IF NOT EXISTS users(user_id serial PRIMARY KEY, username TEXT UNIQUE NOT NULL, password TEXT UNIQUE NOT NULL);")
 	# conn.execute("SELECT * FROM users;").fetchall()
 
 	# run_query(db, "CREATE TABLE users(user_id serial PRIMARY KEY, username TEXT UNIQUE NOT NULL, password TEXT UNIQUE NOT NULL;")
@@ -54,16 +61,14 @@ def build_flask_app():
 	# login_manager = LoginManager()
 	# login_manager.init_app(app)
 
-	app.secret_key = os.environ['durr']
-
 	# class User(db.Model):
 	#     id = db.Column(db.Integer, primary_key=True)
 	#     spotify_id = db.Column(db.String(200), unique=False, nullable=True)
 	#     spotify_token = db.Column(db.String(200), unique=False, nullable=True)
 
-	return app
+	return app, conn
 
-app = build_flask_app()
+app, db = build_flask_app()
 
 
 @app.route('/getSurveyInfo', methods=('GET',))
@@ -75,33 +80,57 @@ def get_survey_info():
 	}
 	return survey_info
 
+
+@app.route('/test', methods=('GET',))
+def test():
+	return {'success': True}
+
+
+@app.route('/login', methods=('POST',))
+def login():
+	print('request is {}'.format(request.form))
+	print("also try {}".format(request.get_json()))
+	username = request.get_json()['username']
+	password = request.get_json()['password']
+	if not (username and password):
+		return {'success': False, 'msg': 'Error: must fill out both fields'}
+	password = sha256(password.encode()).hexdigest()
+	if (any(c in username for c in ('"', "'", ';', '\\'))):
+		return {'success': False, 'msg': 'Invalid characters used'}
+
+	user_match = db.execute("SELECT * FROM users WHERE username=%s AND password=%s", username, password).fetchone()
+	if not user_match:
+		return {'success': False, 'msg': 'Invalid creds'}
+
+	return {'success': True, 'user': user_match['user_id']}
+
 @app.route('/attemptLogin/<login_payload>', methods=('POST',))
 def attempt_login(login_payload):
 	print("attempting login")
 	if 'email' in login_payload and 'password' in login_payload:
 		return "success"
 
-@app.route('/login/login_payload', methods=('POST',))
-def login():
-	if 'email' in login_payload and 'password' in login_payload:
-		login_user()
+# @app.route('/login/login_payload', methods=('POST',))
+# def login():
+# 	if 'email' in login_payload and 'password' in login_payload:
+# 		login_user()
 
-	form = LoginForm()
-	if form.validate_on_submit():
-		# Login and validate the user.
-		# user should be an instance of your `User` class
-		login_user(user)
+# 	form = LoginForm()
+# 	if form.validate_on_submit():
+# 		# Login and validate the user.
+# 		# user should be an instance of your `User` class
+# 		login_user(user)
 
-		flask.flash('Logged in successfully.')
+# 		flask.flash('Logged in successfully.')
 
-		next = flask.request.args.get('next')
-		# is_safe_url should check if the url is safe for redirects.
-		# See http://flask.pocoo.org/snippets/62/ for an example.
-		if not is_safe_url(next):
-			return flask.abort(400)
+# 		next = flask.request.args.get('next')
+# 		# is_safe_url should check if the url is safe for redirects.
+# 		# See http://flask.pocoo.org/snippets/62/ for an example.
+# 		if not is_safe_url(next):
+# 			return flask.abort(400)
 
-		return flask.redirect(next or flask.url_for('index'))
-	return flask.render_template('login.html', form=form)
+# 		return flask.redirect(next or flask.url_for('index'))
+# 	return flask.render_template('login.html', form=form)
 
 
 # @login_manager.user_loader
