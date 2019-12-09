@@ -7,11 +7,13 @@ import {SurveyService} from './customerSurvey/survey-api.service';
 import {LoginService} from './log-in/log-in-api.service';
 import { LogInComponent } from './log-in/log-in.component';
 import {FormsModule} from '@angular/forms';
+import { SurveyCreatorComponent } from './surveyCreator/survey-creator/survey-creator.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LogInComponent
+    LogInComponent,
+    SurveyCreatorComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +21,7 @@ import {FormsModule} from '@angular/forms';
     FormsModule
   ],
   providers: [SurveyService, LoginService],
-  bootstrap: [LogInComponent]
+  bootstrap: [SurveyCreatorComponent]
 })
 export class AppModule {
 }

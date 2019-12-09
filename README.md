@@ -14,4 +14,5 @@ set durr to some secret 16-character key
 ## To run
 flask run (-h 0.0.0.0)
 test with http://127.0.0.1:5000/test/ok
-"C:\Program Files\PostgreSQL\10\scripts\runpsql.bat"
+run "C:\Program Files\PostgreSQL\10\scripts\runpsql.bat"
+ng build

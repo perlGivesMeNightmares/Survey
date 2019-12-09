@@ -8,10 +8,6 @@ from hashlib import sha256
 import os
 import json
 
-
-# app = Flask(__name__)
-# CORS(app)
-
 def setup_db(app):
 	POSTGRES_URL = os.environ['POSTGRES_URL']
 	POSTGRES_USER = os.environ['POSTGRES_USER']
@@ -46,11 +42,11 @@ def build_flask_app():
 	engine, session, db = setup_db(app)
 	conn = engine.connect()
 	conn.execute("CREATE TABLE IF NOT EXISTS users(user_id serial PRIMARY KEY, username TEXT UNIQUE NOT NULL, password TEXT UNIQUE NOT NULL);")
-	# conn.execute("SELECT * FROM users;").fetchall()
+
+	conn.execute("INSERT INTO users (username, password) VALUES ('testuser', 'b822f1cd2dcfc685b47e83e3980289fd5d8e3ff3a82def24d7d1d68bb272eb32') "
+		"ON CONFLICT DO NOTHING;")
 
 	# run_query(db, "CREATE TABLE users(user_id serial PRIMARY KEY, username TEXT UNIQUE NOT NULL, password TEXT UNIQUE NOT NULL;")
-	# x = run_query(db, "SELECT * FROM users;")
-	# print(x)
 
 	# drop_tables(db)
 
