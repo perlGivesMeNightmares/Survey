@@ -1,10 +1,11 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {LoginService} from './log-in-api.service';
-import {Router} from "@angular/router"
+import {ActivatedRoute, Router} from '@angular/router';
+
 
 @Component({
-  selector: 'app-rootz',
+  selector: 'log-in',
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.css']
 })
@@ -16,8 +17,9 @@ export class LogInComponent implements OnInit {
   buttonText: string = 'Log In';
   setError: boolean = false;
   errorText: string = '';
+  isSuccess: boolean = false;
 
-  constructor(private loginApi: LoginService) {
+  constructor(private loginApi: LoginService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
@@ -32,18 +34,21 @@ export class LogInComponent implements OnInit {
       this.setError = false;
     }
 
-  	this.loginApi.attemptLogin(this.data).subscribe(data => { 
-      console.log('data is ' + JSON.stringify(data));
+    this.loginApi.attemptLogin(this.createUserPage, this.data).subscribe(data => { 
       let loginRes = data;
       if (!loginRes.success) {
         this.setError = true;
         this.errorText = loginRes.msg
+        this.isSuccess = false;
       }
       else {
-        console.log('login success');
+        this.isSuccess = true;
+        if (!this.createUserPage) {
+          localStorage.setItem('token', loginRes.token);
+          this.router.navigate(['/admin']);
+        }
       }
     });
-    
   }
 
   changeMode() {

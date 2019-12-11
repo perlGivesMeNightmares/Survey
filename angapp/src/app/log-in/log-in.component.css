@@ -40,10 +40,10 @@
       background-color: #ECF0F1;
     }
     form .field:focus {
-      border: 2px solid #3498DB;
+      border: 2px solid #1a39b3;
     }
     form .btn{
-      background-color: #3498DB;
+      background-color: #1a39b3;
       color: #fff;
       line-height: 25px;
       cursor: pointer;

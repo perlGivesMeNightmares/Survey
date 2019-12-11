@@ -2,10 +2,10 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {API_URL} from '../env';
+import {API_URL} from '../../env';
 
 @Injectable()
-export class LoginService {
+export class SurveyCreatorService {
 
   constructor(private http: HttpClient) {
   }
@@ -14,11 +14,8 @@ export class LoginService {
     return Observable.throw(err.message || 'Error: Unable to complete request.');
   }
 
-  attemptLogin(isRegister, userInfo): any {
-    if (isRegister) {
-      return this.http.post(`${API_URL}/register`, userInfo, {headers: {"Content-Type": "application/json"}});
-    }
-    return this.http.post(`${API_URL}/login`, userInfo, {headers: {"Content-Type": "application/json"}});
+  uploadSurvey(surveyInfo): any {
+    return this.http.post(`${API_URL}/upload_survey`, surveyInfo, {headers: {"Content-Type": "application/json"}});
   }
 
 }

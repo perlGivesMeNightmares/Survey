@@ -15,6 +15,9 @@
 // }
 
 import { Component, Input, Output, EventEmitter } from "@angular/core";
+import {Subscription} from 'rxjs';
+import {SurveyCreatorService} from './survey-creator-api.service';
+import {ActivatedRoute, Router} from '@angular/router';
 import * as SurveyKo from "survey-knockout";
 import * as SurveyCreator from "survey-creator";
 import * as widgets from "surveyjs-widgets";
@@ -24,15 +27,15 @@ import "inputmask/dist/inputmask/phone-codes/phone.js";
 widgets.icheck(SurveyKo);
 widgets.select2(SurveyKo);
 widgets.inputmask(SurveyKo);
-widgets.jquerybarrating(SurveyKo);
-widgets.jqueryuidatepicker(SurveyKo);
-widgets.nouislider(SurveyKo);
-widgets.select2tagbox(SurveyKo);
-widgets.signaturepad(SurveyKo);
-widgets.sortablejs(SurveyKo);
-widgets.ckeditor(SurveyKo);
+//widgets.jquerybarrating(SurveyKo);
+//widgets.jqueryuidatepicker(SurveyKo);
+//widgets.nouislider(SurveyKo);
+//widgets.select2tagbox(SurveyKo);
+//widgets.signaturepad(SurveyKo);
+// widgets.sortablejs(SurveyKo);
+//widgets.ckeditor(SurveyKo);
 widgets.autocomplete(SurveyKo);
-widgets.bootstrapslider(SurveyKo);
+// widgets.bootstrapslider(SurveyKo);
 //widgets.emotionsratings(SurveyKo);
 
 SurveyCreator.StylesManager.applyTheme("default");
@@ -59,8 +62,7 @@ SurveyCreator.SurveyPropertyModalEditor.registerCustomWidget(
 );
 
 @Component({
-  //selector: "app-survey-creator",
-  selector: "app-root",
+  selector: "app-survey-creator",
   template: `
     <div id="surveyCreatorContainer"></div>
   `
@@ -69,6 +71,10 @@ export class SurveyCreatorComponent {
   surveyCreator: SurveyCreator.SurveyCreator;
   @Input() json: any;
   @Output() surveySaved: EventEmitter<Object> = new EventEmitter();
+
+  constructor(private creatorService: SurveyCreatorService, private route: ActivatedRoute, private router: Router) {
+  }
+
   ngOnInit() {
     SurveyKo.JsonObject.metaData.addProperty(
       "questionbase",
@@ -95,8 +101,20 @@ export class SurveyCreatorComponent {
     this.surveyCreator.saveSurveyFunc = this.saveMySurvey;
   }
 
-  saveMySurvey = () => {
-    console.log(JSON.stringify(this.surveyCreator.text));
-    this.surveySaved.emit(JSON.parse(this.surveyCreator.text));
-  };
+  saveMySurvey() {
+  	console.log(JSON.stringify(this.surveyCreator.text));
+  	let payload = {surveyJson: this.surveyCreator.text, token: localStorage.get('token');
+  	this.creatorService.uploadSurvey(payload).subscribe(data => {
+  		if (data.success) {
+  			alert('survey saved successfully!');
+  			this.router.navigate(['/admin']);
+  		}
+    });
+    // this.surveySaved.emit(JSON.parse(this.surveyCreator.text));
+  }
+
+  // saveMySurvey = () => {
+  //   console.log(JSON.stringify(this.surveyCreator.text));
+  //   this.surveySaved.emit(JSON.parse(this.surveyCreator.text));
+  // };
 }

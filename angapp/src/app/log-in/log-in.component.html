@@ -8,6 +8,7 @@
       <input type="submit" [value]="buttonText" class="btn">
     </form>
     <div *ngIf="setError" style="color: red;text-align: center">{{errorText}}</div>
+    <div *ngIf="isSuccess" style="color: green; text-align: center; font-weight: bold">Success!</div>
     <div class="pass-link">
       <a href="#" (click)="changeMode()">{{changeModeText}}</a>
     </div>  
