@@ -29,14 +29,14 @@ figure figcaption {
 	display: inline-block;
   	max-width: 45%;
   	float: left;
-  	padding-left: 10%;
+  	padding-left: 5%;
 }
 
 .righto {
 	display: inline-block;
   	max-width: 45%;
   	float: right;
-  	padding-right: 10%;
+  	padding-right: 5%;
 }
 
 .wrapp {

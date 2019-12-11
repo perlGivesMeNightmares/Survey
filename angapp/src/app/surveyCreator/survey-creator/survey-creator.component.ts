@@ -101,9 +101,9 @@ export class SurveyCreatorComponent {
     this.surveyCreator.saveSurveyFunc = this.saveMySurvey;
   }
 
-  saveMySurvey() {
-  	console.log(JSON.stringify(this.surveyCreator.text));
-  	let payload = {surveyJson: this.surveyCreator.text, token: localStorage.get('token');
+  saveMySurvey = () => {
+    console.log(JSON.stringify(this.surveyCreator.text));
+    let payload = {surveyJson: this.surveyCreator.text, token: localStorage.getItem('token')};
   	this.creatorService.uploadSurvey(payload).subscribe(data => {
   		if (data.success) {
   			alert('survey saved successfully!');
@@ -111,10 +111,5 @@ export class SurveyCreatorComponent {
   		}
     });
     // this.surveySaved.emit(JSON.parse(this.surveyCreator.text));
-  }
-
-  // saveMySurvey = () => {
-  //   console.log(JSON.stringify(this.surveyCreator.text));
-  //   this.surveySaved.emit(JSON.parse(this.surveyCreator.text));
-  // };
+  };
 }

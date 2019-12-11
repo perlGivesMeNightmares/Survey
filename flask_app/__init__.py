@@ -70,12 +70,12 @@ def get_survey_info():
 @app.route('/upload_survey', methods=('POST',))
 def upload_survey():
 	survey_json = request.get_json()['surveyJson']
-	print(survey_json)
+	# print(survey_json)
 	token = request.get_json()['token']
 	res = authenticate(token)
 	if not res.get('success'):
 		return res
-	link_text = uuid4[:7]
+	link_text = str(uuid4())[:7]
 	db.execute("INSERT INTO surveys (link_id, content, user_id) VALUES (%s, %s, %s);", link_text, survey_json, res['user'])
 	return {'success': True}
 

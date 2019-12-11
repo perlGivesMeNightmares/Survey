@@ -8,5 +8,6 @@ instance/
 .pytest_cache/
 .coverage
 htmlcov/
-.node_modules
-node_modules/
+
+node_modules/*
+!node_modules/survey-creator
