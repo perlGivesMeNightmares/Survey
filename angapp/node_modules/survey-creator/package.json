@@ -1,0 +1,71 @@
+{
+  "_from": "survey-creator",
+  "_id": "survey-creator@1.1.23",
+  "_inBundle": false,
+  "_integrity": "sha512-5AX2h3xX8Igwmgd7GJWqxBKoqGHIR1e2LlTHTFU3sfG+Ny6wSWVgi+KlNeyXqy0uF49EXdtF1cNn5GrdXTP1Lg==",
+  "_location": "/survey-creator",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "survey-creator",
+    "name": "survey-creator",
+    "escapedName": "survey-creator",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/survey-creator/-/survey-creator-1.1.23.tgz",
+  "_shasum": "135a098b257efbb9fb86a25a79e569d25821d098",
+  "_spec": "survey-creator",
+  "_where": "C:\\Users\\Emre\\Documents\\Survey\\angapp",
+  "bugs": {
+    "url": "https://github.com/surveyjs/survey-creator/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "knockout": "^3.5.0",
+    "survey-knockout": "^1.1.23"
+  },
+  "deprecated": false,
+  "description": "Use SurveyJS Creator to create or edit JSON for SurveyJS Library.",
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "survey-creator.css",
+    "survey-creator.min.css",
+    "survey-creator.js",
+    "survey-creator.d.ts",
+    "survey-creator.min.js"
+  ],
+  "homepage": "https://surveyjs.io/Overview/Survey-Creator",
+  "keywords": [
+    "Survey",
+    "Survey Creator",
+    "Form Builder",
+    "Survey Maker",
+    "SurveyJS",
+    "JavaScript",
+    "TypeScript"
+  ],
+  "license": "https://surveyjs.io/Licenses#BuildSurvey",
+  "main": "survey-creator.js",
+  "name": "survey-creator",
+  "peerDependencies": {
+    "bootstrap": "^3.3.6",
+    "jquery": "^3.1.1",
+    "ace-builds": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surveyjs/survey-creator.git"
+  },
+  "typings": "survey-creator.d.ts",
+  "version": "1.1.23"
+}
