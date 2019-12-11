@@ -23,7 +23,7 @@
     "ckeditor": "^4.12.1",
     "rxjs": "~6.4.0",
     "survey-angular": "^1.1.23",
-    "survey-creator": "^1.1.23",
+    // "survey-creator": "^1.1.23",
     "survey-pdf": "^1.1.23",
     "surveyjs-widgets": "^1.1.23",
     "tslib": "^1.10.0",
